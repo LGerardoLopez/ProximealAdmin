@@ -183,4 +183,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('coupons', 'CouponController')->except([
         'show'
     ]);
+
+    //Vehicles
+    Route::resource('vehicles', 'VehicleController')->except([
+        'show'
+    ]);
 });

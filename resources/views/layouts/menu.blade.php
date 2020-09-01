@@ -155,6 +155,12 @@
     </li>
 @endcan
 
+@can('vehicles.index')
+    <li class="nav-item">
+        <a class="nav-link {{ Request::is('vehicles*') ? 'active' : '' }}" href="{!! route('vehicles.index') !!}">@if($icons)<i class="nav-icon fa fa-truck"></i>@endif<p>{{trans('lang.vehicle')}} <span class="right badge badge-success">New</span> </p></a>
+    </li>
+@endcan
+
 @can('faqs.index')
     <li class="nav-item has-treeview {{ Request::is('faqCategories*') || Request::is('faqs*') ? 'menu-open' : '' }}">
         <a href="#" class="nav-link {{ Request::is('faqs*') || Request::is('faqCategories*') ? 'active' : '' }}"> @if($icons)

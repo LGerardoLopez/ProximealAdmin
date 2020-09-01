@@ -16,6 +16,7 @@ use App\Repositories\CustomFieldRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\UploadRepository;
 use App\Repositories\UserRepository;
+use App\Repositories\VehicleRepository;
 use Flash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -40,13 +41,14 @@ class UserController extends Controller
     private $customFieldRepository;
 
     public function __construct(UserRepository $userRepo, RoleRepository $roleRepo, UploadRepository $uploadRepo,
-                                CustomFieldRepository $customFieldRepo)
+                                CustomFieldRepository $customFieldRepo, VehicleRepository $vehicleRepo)
     {
         parent::__construct();
         $this->userRepository = $userRepo;
         $this->roleRepository = $roleRepo;
         $this->uploadRepository = $uploadRepo;
         $this->customFieldRepository = $customFieldRepo;
+        $this->vehicleRepository = $vehicleRepo;
     }
 
     /**
@@ -91,7 +93,7 @@ class UserController extends Controller
     public function create()
     {
         $role = $this->roleRepository->pluck('name', 'name');
-
+        $vehicle = $this->vehicleRepository->pluck('brand', 'id');
         $rolesSelected = [];
         $hasCustomField = in_array($this->userRepository->model(), setting('custom_field_models', []));
         if ($hasCustomField) {
@@ -99,10 +101,12 @@ class UserController extends Controller
             $html = generateCustomField($customFields);
         }
 
-        return view('settings.users.create')
+       return view('settings.users.create')
             ->with("role", $role)
             ->with("customFields", isset($html) ? $html : false)
-            ->with("rolesSelected", $rolesSelected);
+            ->with("rolesSelected", $rolesSelected)
+            ->with('vehicle', $vehicle);
+
     }
 
     /**
@@ -114,6 +118,7 @@ class UserController extends Controller
      */
     public function store(CreateUserRequest $request)
     {
+        //Si es demo entonces no es modificable
         if (env('APP_DEMO', false)) {
             Flash::warning('This is only demo app you can\'t change this section ');
             return redirect(route('users.index'));
@@ -198,6 +203,7 @@ class UserController extends Controller
         $html = false;
         $role = $this->roleRepository->pluck('name', 'name');
         $rolesSelected = $user->getRoleNames()->toArray();
+        $vehicle = $this->vehicleRepository->pluck('brand', 'id');
         $customFieldsValues = $user->customFieldsValues()->with('customField')->get();
         $customFields = $this->customFieldRepository->findByField('custom_field_model', $this->userRepository->model());
         $hasCustomField = in_array($this->userRepository->model(), setting('custom_field_models', []));
@@ -213,7 +219,8 @@ class UserController extends Controller
         return view('settings.users.edit')
             ->with('user', $user)->with("role", $role)
             ->with("rolesSelected", $rolesSelected)
-            ->with("customFields", $html);
+            ->with("customFields", $html)
+            ->with('vehicle', $vehicle);
     }
 
     /**
