@@ -1,4 +1,5 @@
 <?php
+
 /**
  * File name: UserController.php
  * Last modified: 2020.06.08 at 20:36:19
@@ -12,8 +13,10 @@ use App\DataTables\UserDataTable;
 use App\Events\UserRoleChangedEvent;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\ModelHasRole;
 use App\Repositories\CustomFieldRepository;
 use App\Repositories\RoleRepository;
+use App\Repositories\RoleFolioRepository;
 use App\Repositories\UploadRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\VehicleRepository;
@@ -33,6 +36,16 @@ class UserController extends Controller
      */
     private $roleRepository;
 
+    /**
+     * @var RoleFolioRepository
+     */
+    private $roleFolioRepository;
+
+    /**
+     * @var ModelHasRoleRepository
+     */
+    private $modelHasRoleRepository;
+
     private $uploadRepository;
 
     /**
@@ -40,15 +53,23 @@ class UserController extends Controller
      */
     private $customFieldRepository;
 
-    public function __construct(UserRepository $userRepo, RoleRepository $roleRepo, UploadRepository $uploadRepo,
-                                CustomFieldRepository $customFieldRepo, VehicleRepository $vehicleRepo)
-    {
+    public function __construct(
+        UserRepository $userRepo,
+        RoleRepository $roleRepo,
+        UploadRepository $uploadRepo,
+        CustomFieldRepository $customFieldRepo,
+        VehicleRepository $vehicleRepo,
+        RoleFolioRepository $roleFolioRepo,
+        ModelHasRole $modelHasRoleRepo
+    ) {
         parent::__construct();
         $this->userRepository = $userRepo;
         $this->roleRepository = $roleRepo;
         $this->uploadRepository = $uploadRepo;
         $this->customFieldRepository = $customFieldRepo;
         $this->vehicleRepository = $vehicleRepo;
+        $this->roleFolioRepository = $roleFolioRepo;
+        $this->modelHasRoleRepository = $modelHasRoleRepo;
     }
 
     /**
@@ -59,6 +80,8 @@ class UserController extends Controller
      */
     public function index(UserDataTable $userDataTable)
     {
+       // $defaultRoles = $this->roleRepository->findByField('default', '1');
+        //dd($defaultRoles[0]->id);
         return $userDataTable->render('settings.users.index');
     }
 
@@ -101,12 +124,11 @@ class UserController extends Controller
             $html = generateCustomField($customFields);
         }
 
-       return view('settings.users.create')
+        return view('settings.users.create')
             ->with("role", $role)
             ->with("customFields", isset($html) ? $html : false)
             ->with("rolesSelected", $rolesSelected)
             ->with('vehicle', $vehicle);
-
     }
 
     /**
@@ -125,6 +147,13 @@ class UserController extends Controller
         }
 
         $input = $request->all();
+
+        //Get role_id by role name
+        $role = $this->roleRepository->where('name', $request->roles)->first();
+        //Cuanto roles exiten por id para poder obtener el consecutivo
+        //$next = $this->modelHasRoleRepository->where('role_id', $role->id)->count();
+        //$input['key_id'] = $next + 1;      
+
         $customFields = $this->customFieldRepository->findByField('custom_field_model', $this->userRepository->model());
 
         $input['roles'] = isset($input['roles']) ? $input['roles'] : [];
@@ -132,9 +161,19 @@ class UserController extends Controller
         $input['api_token'] = str_random(60);
 
         try {
+            if ($role->name != 'admin') {
+                $nextFolio = $this->roleFolioRepository->where('role_id', $role->id)->first();
+                $input['key_id'] = $nextFolio->prefix . str_pad($nextFolio->next + 1, 4, "0", STR_PAD_LEFT);
+            }
             $user = $this->userRepository->create($input);
             $user->syncRoles($input['roles']);
             $user->customFieldsValues()->createMany(getCustomFieldsValues($customFields, $request));
+
+            //Next role folio
+            if ($role) {
+                $nextFolio->next = $nextFolio->next + 1;
+                $nextFolio->save();
+            }
 
             if (isset($input['avatar']) && $input['avatar']) {
                 $cacheUpload = $this->uploadRepository->getByUuid($input['avatar']);
@@ -244,6 +283,8 @@ class UserController extends Controller
 
         $user = $this->userRepository->findWithoutFail($id);
 
+        //Get role_id by role name
+        $role = $this->roleRepository->where('name', $request->roles)->first();
 
         if (empty($user)) {
             Flash::error('User not found');
@@ -255,7 +296,7 @@ class UserController extends Controller
         if (!auth()->user()->can('permissions.index')) {
             unset($input['roles']);
         } else {
-        $input['roles'] = isset($input['roles']) ? $input['roles'] : [];
+            $input['roles'] = isset($input['roles']) ? $input['roles'] : [];
         }
         if (empty($input['password'])) {
             unset($input['password']);
@@ -263,7 +304,15 @@ class UserController extends Controller
             $input['password'] = Hash::make($input['password']);
         }
         try {
+            
+            if ($role->name != 'admin') {
+                $nextFolio = $this->roleFolioRepository->where('role_id', $role->id)->first();
+                $input['key_id'] = $nextFolio->prefix . str_pad($nextFolio->next + 1, 4, "0", STR_PAD_LEFT);
+            }
+
             $user = $this->userRepository->update($input, $id);
+
+
             if (empty($user)) {
                 Flash::error('User not found');
                 return redirect(route('users.profile'));
@@ -274,12 +323,19 @@ class UserController extends Controller
                 $mediaItem->copy($user, 'avatar');
             }
             if (auth()->user()->can('permissions.index')) {
-            $user->syncRoles($input['roles']);
+                $user->syncRoles($input['roles']);
             }
             foreach (getCustomFieldsValues($customFields, $request) as $value) {
                 $user->customFieldsValues()
                     ->updateOrCreate(['custom_field_id' => $value['custom_field_id']], $value);
             }
+
+            //Next role folio
+            if ($role && $user) {
+                $nextFolio->next = $nextFolio->next + 1;
+                $nextFolio->save();
+            }
+
             event(new UserRoleChangedEvent($user));
         } catch (ValidatorException $e) {
             Flash::error($e->getMessage());
@@ -289,7 +345,6 @@ class UserController extends Controller
         Flash::success('User updated successfully.');
 
         return redirect()->back();
-
     }
 
     /**
@@ -341,5 +396,9 @@ class UserController extends Controller
                 }
             }
         }
+    }
+
+    public function nextFolio ($role) {
+        
     }
 }

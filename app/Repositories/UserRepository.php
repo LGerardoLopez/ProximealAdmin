@@ -27,7 +27,7 @@ class UserRepository extends BaseRepository
         'api_token',
         'store_id',
         'role_id',
-        'remember_token'
+        'remember_token',
     ];
 
     /**

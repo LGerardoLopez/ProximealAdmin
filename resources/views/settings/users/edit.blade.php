@@ -11,32 +11,32 @@
 @endpush
 @section('settings_title',trans('lang.user_table'))
 @section('settings_content')
-  @include('flash::message')
-  @include('adminlte-templates::common.errors')
-  <div class="clearfix"></div>
-  <div class="card">
+@include('flash::message')
+@include('adminlte-templates::common.errors')
+<div class="clearfix"></div>
+<div class="card">
     <div class="card-header">
-      <ul class="nav nav-tabs align-items-end card-header-tabs w-100">
-        <li class="nav-item">
-          <a class="nav-link" href="{!! route('users.index') !!}"><i class="fa fa-list mr-2"></i>{{trans('lang.user_table')}}</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{!! route('users.create') !!}"><i class="fa fa-plus mr-2"></i>{{trans('lang.user_create')}}</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="{!! url()->current() !!}"><i class="fa fa-pencil mr-2"></i>{{trans('lang.user_edit')}}</a>
-        </li>
-      </ul>
+        <ul class="nav nav-tabs align-items-end card-header-tabs w-100">
+            <li class="nav-item">
+                <a class="nav-link" href="{!! route('users.index') !!}"><i class="fa fa-list mr-2"></i>{{trans('lang.user_table')}}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{!! route('users.create') !!}"><i class="fa fa-plus mr-2"></i>{{trans('lang.user_create')}}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="{!! url()->current() !!}"><i class="fa fa-pencil mr-2"></i>{{trans('lang.user_edit')}}</a>
+            </li>
+        </ul>
     </div>
     <div class="card-body">
-      {!! Form::model($user, ['route' => ['users.update', $user->id], 'method' => 'patch']) !!}
-      <div class="row">
-        @include('settings.users.fields')
-      </div>
-      {!! Form::close() !!}
-      <div class="clearfix"></div>
+        {!! Form::model($user, ['route' => ['users.update', $user->id], 'method' => 'patch']) !!}
+        <div class="row">
+            @include('settings.users.fields')
+        </div>
+        {!! Form::close() !!}
+        <div class="clearfix"></div>
     </div>
-  </div>
+</div>
 </div>
 @include('layouts.media_modal',['collection'=>null])
 @endsection
@@ -52,5 +52,17 @@
 <script type="text/javascript">
     Dropzone.autoDiscover = false;
     var dropzoneFields = [];
+
+    let role = document.getElementById('roles');
+    let _key = document.getElementById('key');
+    let _selected = document.getElementById('role_selected')
+    role.onchange = function() {
+        if (role.value !== 'admin') {
+            if ((_selected.value !== undefined || _selected.value !== null || _selected.value !== '') && (role.value !== _selected.value)) {
+              alert(`Tenga en cuenta que la clave actual ${_key.innerHTML} le pertenece al rol ${_selected.value}, lo cual cambiara de acuerdo al rol seleccionado`);
+            }
+        }
+    };
+
 </script>
 @endpush

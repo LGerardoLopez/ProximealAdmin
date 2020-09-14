@@ -59,6 +59,7 @@ class User extends Authenticatable implements HasMedia
         'password',
         'api_token',
         'device_token',
+        'key_id'
     ];
     /**
      * The attributes that should be casted to native types.
@@ -71,7 +72,8 @@ class User extends Authenticatable implements HasMedia
         'password' => 'string',
         'api_token' => 'string',
         'device_token' => 'string',
-        'remember_token' => 'string'
+        'remember_token' => 'string',
+        'key_id' => 'string'
     ];
     /**
      * New Attributes
@@ -182,6 +184,5 @@ class User extends Authenticatable implements HasMedia
     public function cart()
     {
         return $this->hasMany(\App\Models\Cart::class, 'user_id');
-    }
-
+    }   
 }

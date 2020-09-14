@@ -15,6 +15,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Repositories\CustomFieldRepository;
 use App\Repositories\RoleRepository;
+use App\Repositories\RoleFolioRepository;
 use App\Repositories\UploadRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
@@ -31,22 +32,24 @@ class UserAPIController extends Controller
      * @var UserRepository
      */
     private $userRepository;
-
     private $uploadRepository;
     private $roleRepository;
     private $customFieldRepository;
+    private $roleFolioRepository;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(UserRepository $userRepository, UploadRepository $uploadRepository, RoleRepository $roleRepository, CustomFieldRepository $customFieldRepo)
+    public function __construct(UserRepository $userRepository, UploadRepository $uploadRepository, RoleRepository $roleRepository, 
+    CustomFieldRepository $customFieldRepo, RoleFolioRepository $roleFolioRepo)
     {
         $this->userRepository = $userRepository;
         $this->uploadRepository = $uploadRepository;
         $this->roleRepository = $roleRepository;
         $this->customFieldRepository = $customFieldRepo;
+        $this->roleFolioRepository = $roleFolioRepo;
     }
 
     function login(Request $request)
@@ -92,11 +95,22 @@ class UserAPIController extends Controller
             $user->device_token = $request->input('device_token', '');
             $user->password = Hash::make($request->input('password'));
             $user->api_token = str_random(60);
-            $user->save();
-
             $defaultRoles = $this->roleRepository->findByField('default', '1');
-            $defaultRoles = $defaultRoles->pluck('name')->toArray();
-            $user->assignRole($defaultRoles);
+
+            if ($defaultRoles[0] != 'admin') {
+                $nextFolio = $this->roleFolioRepository->where('role_id', $defaultRoles[0]->id)->first();
+                $user->key_id = $nextFolio->prefix . str_pad($nextFolio->next + 1, 4, "0", STR_PAD_LEFT);
+            }
+            if ($user->save()) {
+                //Next role folio
+                if ($defaultRoles) {
+                    $nextFolio->next = $nextFolio->next + 1;
+                    $nextFolio->save();
+                }
+
+                $defaultRoles = $defaultRoles->pluck('name')->toArray();
+                $user->assignRole($defaultRoles);
+            }
 
             event(new UserRoleChangedEvent($user));
         } catch (\Exception $e) {

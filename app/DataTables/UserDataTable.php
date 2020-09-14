@@ -32,11 +32,15 @@ class UserDataTable extends DataTable
             ->editColumn('role', function ($user) {
                 return getArrayColumn($user->roles,'name');
             })
+           
             ->editColumn('email', function ($user) {
                 return getEmailColumn($user, 'email');
             })
             ->editColumn('avatar', function ($user) {
                 return getMediaColumn($user, 'avatar', 'img-circle elevation-2');
+            })
+            ->editColumn('key_id', function ($user) {
+                return !empty($user->key_id) ? $user->key_id : "#";
             })
             ->addColumn('action', 'settings.users.datatables_actions')
             ->rawColumns(array_merge($columns, ['action']));
@@ -99,11 +103,16 @@ class UserDataTable extends DataTable
 
             ],
             [
+                'data' => 'key_id',
+                'title' => 'Clave',
+            ],
+            [
                 'data' => 'role',
                 'title' => trans('lang.user_role_id'),
                 'orderable' => false, 'searchable' => false,
 
             ],
+           
             [
                 'data' => 'updated_at',
                 'title' => trans('lang.user_updated_at'),

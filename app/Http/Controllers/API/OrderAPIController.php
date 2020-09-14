@@ -1,4 +1,5 @@
 <?php
+
 /**
  * File name: OrderAPIController.php
  * Last modified: 2020.06.11 at 16:10:52
@@ -13,6 +14,7 @@ use App\Criteria\Orders\OrdersOfStatusesCriteria;
 use App\Criteria\Orders\OrdersOfUserCriteria;
 use App\Events\OrderChangedEvent;
 use App\Http\Controllers\Controller;
+use App\Mail\EmailOrder;
 use App\Models\Order;
 use App\Notifications\NewOrder;
 use App\Notifications\StatusChangedOrder;
@@ -24,6 +26,7 @@ use App\Repositories\PaymentRepository;
 use App\Repositories\UserRepository;
 use Flash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use Prettus\Repository\Criteria\RequestCriteria;
@@ -77,7 +80,7 @@ class OrderAPIController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
-{
+    {
         try {
             $this->orderRepository->pushCriteria(new RequestCriteria($request));
             $this->orderRepository->pushCriteria(new LimitOffsetCriteria($request));
@@ -117,8 +120,6 @@ class OrderAPIController extends Controller
         }
 
         return $this->sendResponse($order->toArray(), 'Order retrieved successfully');
-
-
     }
 
     /**
@@ -131,12 +132,13 @@ class OrderAPIController extends Controller
     public function store(Request $request)
     {
         $payment = $request->only('payment');
+       // $order = [];
+
         if (isset($payment['payment']) && $payment['payment']['method']) {
             if ($payment['payment']['method'] == "Credit Card (Stripe Gateway)") {
                 return $this->stripPayment($request);
             } else {
                 return $this->cashPayment($request);
-
             }
         }
     }
@@ -231,9 +233,15 @@ class OrderAPIController extends Controller
             $this->orderRepository->update(['payment_id' => $payment->id], $order->id);
 
             $this->cartRepository->deleteWhere(['user_id' => $order->user_id]);
+           // return response()->json($order->foodOrders[0]->food->restaurant->users);
+            //SendMail Notification
+            //$orders = $this->orderRepository->where('id', $order->id)->get();
+           //Mail::to('cesarchabuluac@gmail.com')->send(new EmailOrder($order->toArray()));
+           //dd($order->foodOrders[0]->food->restaurant->name);
+           //dd(new NewOrder($order));
+           //return response()->json($this->orderRepository);
 
             Notification::send($order->foodOrders[0]->food->restaurant->users, new NewOrder($order));
-
         } catch (ValidatorException $e) {
             return $this->sendError($e->getMessage());
         }
@@ -262,20 +270,18 @@ class OrderAPIController extends Controller
             $order = $this->orderRepository->update($input, $id);
             if (isset($input['order_status_id']) && $input['order_status_id'] == 5 && !empty($order)) {
                 $this->paymentRepository->update(['status' => 'Paid'], $order['payment_id']);
-    }
+            }
             event(new OrderChangedEvent($oldStatus, $order));
 
             if (setting('enable_notifications', false)) {
                 if (isset($input['order_status_id']) && $input['order_status_id'] != $oldOrder->order_status_id) {
-            Notification::send([$order->user], new StatusChangedOrder($order));
+                    Notification::send([$order->user], new StatusChangedOrder($order));
                 }
             }
-
         } catch (ValidatorException $e) {
             return $this->sendError($e->getMessage());
         }
 
         return $this->sendResponse($order->toArray(), __('lang.saved_successfully', ['operator' => __('lang.order')]));
-}
-
+    }
 }
