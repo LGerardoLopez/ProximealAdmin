@@ -132,8 +132,6 @@ class OrderAPIController extends Controller
     public function store(Request $request)
     {
         $payment = $request->only('payment');
-       // $order = [];
-
         if (isset($payment['payment']) && $payment['payment']['method']) {
             if ($payment['payment']['method'] == "Credit Card (Stripe Gateway)") {
                 return $this->stripPayment($request);
@@ -233,13 +231,14 @@ class OrderAPIController extends Controller
             $this->orderRepository->update(['payment_id' => $payment->id], $order->id);
 
             $this->cartRepository->deleteWhere(['user_id' => $order->user_id]);
-           // return response()->json($order->foodOrders[0]->food->restaurant->users);
+            // return response()->json($order->foodOrders[0]->food->restaurant->users);
             //SendMail Notification
             //$orders = $this->orderRepository->where('id', $order->id)->get();
-           //Mail::to('cesarchabuluac@gmail.com')->send(new EmailOrder($order->toArray()));
-           //dd($order->foodOrders[0]->food->restaurant->name);
-           //dd(new NewOrder($order));
-           //return response()->json($this->orderRepository);
+            //$order = $order->with('user');
+            Mail::to('cesarchabuluac@gmail.com')->send(new EmailOrder($order, $this->orderRepository));
+            //dd($order->foodOrders[0]->food->restaurant->name);
+            //dd(new NewOrder($order));
+            //return response()->json($this->orderRepository);
 
             Notification::send($order->foodOrders[0]->food->restaurant->users, new NewOrder($order));
         } catch (ValidatorException $e) {
