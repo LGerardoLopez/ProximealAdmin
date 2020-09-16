@@ -7,11 +7,12 @@
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css' />
 		<style type="text/css">
 			body {
+				width: 960px!important;
 				-webkit-text-size-adjust: none;
 				-ms-text-size-adjust: none;
 			}
 			body, img, div, p, ul, li, span, strong, a {
-				margin: 0;
+				margin: 0 auto;
 				padding: 0;
 			}
 
@@ -171,12 +172,16 @@
 				}
 			}
 
-		</style>
+			.text-left {
+				text-align: left !important;
+			}
 
+		</style>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.0.0-alpha/css/adminlte.min.css" integrity="sha512-wqUzyG4016QKOggC+s5BHtWxlWwlvicFIjvEu+7RdZQe6jZj3AkgjFH5a/Lmattr5FqhKKV1GVg1uDLDkaE2Gg==" crossorigin="anonymous" />
 	</head>
-	<body style="width:100% !important; color:#888888; font-family: 'Open Sans', Arial , sans-serif; font-weight:normal; font-size:11px; line-height:1; background:#e4e4e4;" alink="#4a4a4a" link="#4a4a4a" text="#4a4a4a" yahoo="fix">
+	<body style="width:680px !important; margin: 0 auto; color:#888888; font-family: 'Open Sans', Arial , sans-serif; font-weight:normal; font-size:11px; line-height:1; background:#e4e4e4;">
 		<!-- Section One Starts Here -->
-		<table cellpadding="0" cellspacing="0" border="0" width="680" align="center" class="wrapper">
+		<!-- <table cellpadding="0" cellspacing="0" border="0" width="680" align="center" class="wrapper">
 			<tr>
 				<td width="40" class="gutter-width"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
 				<td valign="top">
@@ -199,7 +204,7 @@
 				</table></td>
 				<td width="40" class="gutter-width"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
 			</tr>
-		</table>
+		</table> -->
 		<!-- Section One Ends Here -->
 		<!-- Section Two Starts Here -->
 		<table cellpadding="0" cellspacing="0" border="0" width="680" align="center" class="wrapper" style="background:#ffffff; border-radius:4px 4px 0 0;">
@@ -255,252 +260,244 @@
 		<!-- Section Three Starts Here -->
 		<table cellpadding="0" cellspacing="0" border="0" width="680" align="center" class="wrapper" style="background-image: url(https://cesarchabuluac.com/template/banner-bg.jpg); background-repeat: no-repeat; background-position: 50% top; background-size:cover; background-color: #443347;">
 			<tr>
-				<td>
-				<table cellpadding="0" cellspacing="0" border="0" width="100%" align="center">
-					<tr>
-						<td width="40" class="gutter-width"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-						<td align="center" height="500" valign="top">
-						<table cellpadding="0" cellspacing="0" border="0" width="500"  align="center" class="main-content">
-							<tr>
-								<td height="172" class="banner-space"><img border="0" src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-							</tr>
-							<tr>
-								<td align="center"  style="font-family: 'Open Sans', sans-serif; line-height: 1.2; font-weight:600; color: #ffffff;  text-transform: none; font-size:56px; word-spacing:-4px;  letter-spacing:-0.8px; " class="main-heading">
-								{!! $order->user->name !!}
-								</td>
-							</tr>
-							<tr>
-								<td height="12"><img border="0" src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-							</tr>
-							<tr>
-								<td align="center"  style="font-family: 'Open Sans', sans-serif; line-height: 1.2; font-weight:600; color: #ffffff; font-size:22px;" class="saleup">
-									Order # {{$order->id}}<br>
-									Status {!! $order->orderStatus->status !!}
-								</td>
-							</tr>
-							<tr>
-								<td height="25"><img border="0" src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-							</tr>
-							{{-- <tr>
-								<td valign="top" align="center">
-								<table cellpadding="0" cellspacing="0" border="0" align="center">
-									<tr>
-										<td><a href="#" style="text-align:center; text-decoration:none;"><img src="https://cesarchabuluac.com/template/pay-icon.png" alt="" width="48" height="48" border="0" style="display:block;"/></a></td>
-									</tr>
-								</table></td>
-							</tr> --}}
-
-						</table></td>
-						<td width="40" class="gutter-width"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-					</tr>
-				</table></td>
-
+				<td>					
+					<table cellpadding="0" cellspacing="0" border="0" width="100%" align="center">
+						<tr>
+							<td width="40" class="gutter-width"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
+							<td align="center" height="500" valign="top">
+							<table cellpadding="0" cellspacing="0" border="0" width="500"  align="center" class="main-content">
+								<tr>
+									<td height="172" class="banner-space"><img border="0" src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
+								</tr>
+								<tr>
+									<td align="center"  style="font-family: 'Open Sans', sans-serif; line-height: 1.2; font-weight:600; color: #ffffff;  text-transform: none; font-size:56px; word-spacing:-4px;  letter-spacing:-0.8px; " class="main-heading">
+										Order #{!! $order->id !!}
+									</td>
+								</tr>
+								<tr>
+									<td height="12"><img border="0" src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
+								</tr>
+								<tr>
+									<td align="center"  style="font-family: 'Open Sans', sans-serif; line-height: 1.2; font-weight:600; color: #ffffff;  font-size:32px;" class="saleup">
+										{!! $order->orderStatus->status  !!}
+									</td>
+								</tr>
+								<tr>
+									<td height="25"><img border="0" src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
+								</tr>
+								<!-- <tr>
+									<td valign="top" align="center">
+									<table cellpadding="0" cellspacing="0" border="0" align="center">
+										<tr>
+											<td><a href="#" style="text-align:center; text-decoration:none;"><img src="images/pay-icon.png" alt="" width="48" height="48" border="0" style="display:block;"/></a></td>
+										</tr>
+									</table></td>
+								</tr> -->
+							</table></td>
+							<td width="40" class="gutter-width"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
+						</tr>
+					</table>
+				</td>
 			</tr>
 		</table>
 		<!-- Section Three ends Here -->
-		<!-- Section Four starts Here -->
-		<table cellpadding="0" cellspacing="0" border="0" width="680" align="center" class="wrapper" style="background:#ffffff;">
+		<!-- Section Four Starts Here -->
+		<table cellpadding="0" cellspacing="0" border="0" width="680" class="wrapper_" style="background:#ffffff;">
 			<tr>
 				<td width="40" class="gutter-width"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-				<td valign="top" align="center">
-				<table cellpadding="0" cellspacing="0" border="0" width="500" align="center" class="main-content">
-					<tr>
-						<td height="25"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1"/></td>
-					</tr>
-					<tr>
-						<td style="font-family: 'Open Sans', Arial , sans-serif; font-size:46px; line-height:1; color:#443347; font-weight:400;  text-align:center;">The Best Spa Ever</td>
-					</tr>
-					<tr>
-						<td height="25"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-					</tr>
-					<tr>
-						<td style="font-family: 'Open Sans', Arial , sans-serif; font-size:20px; line-height:30px; color:#888888; font-weight:400;  text-align:center;">Lorem ipsum dolor sit amet consectetuer adipiscing elit. Duis viverra nisl eu felis integer nisi.</td>
-					</tr>
-					<tr>
-						<td height="30"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-					</tr>
-					<tr>
-						<td valign="top" align="center">
-						<table cellpadding="0" cellspacing="0" border="0" width="300"  align="center" style="background:#4dcb76; border-radius:4px;" class="online-btn">
-							<tr>
-								<td height="48" style="background:#4dcb76; border-radius:4px; text-align:center; "><a href="#" style="font-family: 'Open Sans', Arial , sans-serif; font-size:22px; text-align:center; font-weight:bold; text-decoration:none; display:block; line-height:48px; text-transform:uppercase;color:#ffffff;">Online Reservation</a></td>
-							</tr>
-						</table></td>
-					</tr>
-					<tr>
-						<td height="20"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-					</tr>
-				</table></td>
+				<td valign="top">
+					<table cellpadding="0" cellspacing="0" border="0" width="100%">
+						<tr>
+							<td valign="top" width="180">
+								<table cellpadding="0" cellspacing="0" border="0" width="100%">
+									<tr>
+										<td height="20"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
+									</tr>
+									<tr>
+										<td height="22"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
+									</tr>
+									<tr>
+										<td style="font-family: 'Open Sans', Arial , sans-serif; font-size:18px; color:#443347; font-weight:600;">
+											
+										</td>
+									</tr>
+									<tr>
+										<td height="17"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
+									</tr>
+									<tr>
+										<td style="font-family: 'Open Sans', Arial , sans-serif; font-size:14px; color:#443347; font-weight:400; line-height:22px;">
+											<strong>{{trans('lang.order_client')}} :</strong> {!! $order->user->name !!}<br>
+											<strong>{{trans('lang.order_client_phone')}}: </strong> {!! isset($order->user->custom_fields['phone']) ? $order->user->custom_fields['phone']['view'] : "" !!}<br>
+											<strong>{{trans('lang.delivery_address')}}: </strong>{!! $order->deliveryAddress ? $order->deliveryAddress->address : '' !!}<br>
+											<strong>{{trans('lang.order_date')}}: </strong> {!! $order->created_at !!}
+										</td>
+									</tr>
+									<tr>
+										<td height="35"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
+									</tr>
+								</table>
+							</td>
+							<td width="30" class="mobile-hide"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
+							<td valign="top" width="180">
+								<table cellpadding="0" cellspacing="0" border="0" width="100%">
+									<tr>
+										<td height="20"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
+									</tr>
+									<tr>
+										<td height="22"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
+									</tr>
+									<tr>
+										<td style="font-family: 'Open Sans', Arial , sans-serif; font-size:18px; color:#443347; font-weight:600; text-transform:capitalize; text-align:center;"></td>
+									</tr>
+									<tr>
+										<td height="17"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
+									</tr>
+									<tr>
+										<td style="font-family: 'Open Sans', Arial , sans-serif; font-size:14px; color:#443347; font-weight:400; line-height:22px;">
+											<strong>{{trans('lang.order_active')}}: </strong> 
+											@if($order->order_status_id)
+											<span class='badge badge-success'> {{trans('lang.yes')}}</span>
+											@else
+											<span class='badge badge-danger'>{{trans('lang.order_canceled')}}</span>
+											@endif <br>											
+											<strong>{{trans('lang.payment_method')}}: </strong>{!! $payment->method !!}<br>
+											<strong>{{trans('lang.payment_status')}}:</strong> {!! $payment->status !!}<br>
+											<strong>{{trans('lang.order_updated_at')}}: </strong>{!! $order->updated_at !!}
+										</td>
+									</tr>
+									<tr>
+										<td height="35"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
+									</tr>
+								</table>
+							</td>
+							<td width="30" class="mobile-hide"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
+							<td valign="top" width="180">
+								<table cellpadding="0" cellspacing="0" border="0" width="100%">
+									<tr>
+										<td height="20"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
+									</tr>
+									<tr>
+										<td height="22"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
+									</tr>
+									<tr>
+										<td style="font-family: 'Open Sans', Arial , sans-serif; font-size:18px; color:#443347; font-weight:600; text-transform:capitalize; text-align:center;"></td>
+									</tr>
+									<tr>
+										<td height="17"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
+									</tr>
+									<tr>
+										<td style="font-family: 'Open Sans', Arial , sans-serif; font-size:14px; color:#443347; font-weight:400; line-height:22px;">
+											<strong>{{trans('lang.restaurant')}}: </strong>
+											@if(isset($order->foodOrders[0]))
+												{!! $order->foodOrders[0]->food->restaurant->name !!}
+											@endif
+											<br>
+											<strong>Address: </strong> 
+											@if(isset($order->foodOrders[0]))
+												{!! $order->foodOrders[0]->food->restaurant->address !!}
+											@endif
+											<br>
+											<strong>{{trans('lang.restaurant_phone')}}:</strong> 
+											@if(isset($order->foodOrders[0]))
+												{!! $order->foodOrders[0]->food->restaurant->phone !!}
+											@endif
+											<br>
+											<strong>{{trans('lang.driver')}}:</strong> 
+											@if(isset($order->driver))
+												{!! $order->driver->name !!}
+											@else
+												{{trans('lang.order_driver_not_assigned')}}
+											@endif
+											<br>
+											<strong>Hint: </strong> {!! $order->hint !!}
+										</td>
+									</tr>
+									<tr>
+										<td height="35"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
 				<td width="40" class="gutter-width"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
 			</tr>
+			<tr>
+				<td width="40" class="gutter-width"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
+				<td>
+					<table class="table table-striped text-left" cellpadding="0" cellspacing="0" border="0" width="100%"
+					style="font-family: 'Open Sans', Arial , sans-serif; font-size:14px; color:#443347; font-weight:400; line-height:22px;">
+						<thead>
+						<tr>
+						  <th class="text-left">{{trans('lang.food_order_food_id')}}</th>
+						  <th class="text-left">{{trans('lang.food_order_extras')}}</th>
+						  <th class="text-left">{{trans('lang.food_order_price')}}</th>
+						  <th class="text-left">{{trans('lang.food_order_quantity')}}</th>
+						</tr>
+						</thead>
+						<tbody>
+							@foreach ($order->foodOrders as $foodOrder)
+							<tr>
+								<td class="text-left">
+									{{$foodOrder->food->name}}
+								</td>
+								<td class="text-left">
+									@foreach($foodOrder->extras as $extra)
+									{{$extra->name}},
+									@endforeach
+								</td>
+								<td class="text-left">
+									@foreach ($foodOrder->extras as $extra)
+									@php
+									$foodOrder['price'] += $extra->price;
+									@endphp
+									@endforeach
+									<span>{{setting('default_currency')}}</span> {{number_format((float)$foodOrder['price'], 2, '.', '')}}
+								</td>
+								<td class="text-left">
+									{{$foodOrder->quantity}}
+								</td>
+							</tr>
+							@endforeach
+						</tbody>
+						<tfoot>
+							<tr>
+								<td></td>								
+								<td colspan="2" align="right"><strong>{{trans('lang.order_subtotal')}}</strong></td>
+								<td align="right">{!! getPrice($subtotal) !!}</td>
+							</tr>
+							<tr>
+								<td></td>								
+								<td colspan="2" align="right"><strong>{{trans('lang.order_delivery_fee')}}</strong></td>
+								<td align="right">{!! getPrice($order['delivery_fee'])!!}</td>
+							</tr>
+							<tr>
+								<td></td>								
+								<td colspan="2" align="right"><strong>{{trans('lang.order_tax')}} ({!!$order->tax!!}%)</strong></td>
+								<td align="right">{!! getPrice($taxAmount)!!}</td>
+							</tr>
+							<tr>
+								<td></td>								
+								<td colspan="2" align="right"><strong>{{trans('lang.order_total')}}</strong></td>
+								<td align="right">{!!getPrice($total)!!}</td>
+							</tr>
+						</tfoot>
+					</table>
+				</td>
+				<td width="40" class="gutter-width"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
+			</tr>			
 		</table>
-		<!-- Section Four ends Here -->
+		<!-- Section Four Ends Here -->
+	
 		<!-- Section Five Starts Here -->
 		<table cellpadding="0" cellspacing="0" border="0" width="680" align="center" class="wrapper" style="background:#ffffff;">
 			<tr>
 				<td width="40" class="gutter-width"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-				<td valign="top">
-				<table cellpadding="0" cellspacing="0" border="0" width="100%" class="feature-table">
-					<tr>
-						<td valign="top" width="180">
-						<table cellpadding="0" cellspacing="0" border="0" width="100%" style="text-align:center;">
-							<tr>
-								<td height="20"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-							</tr>
-							<tr>
-								<td style="text-align:center;"><img src="https://cesarchabuluac.com/template/quality.png" alt="" width="45" height="45" border="0" style="display:inline;" /></td>
-							</tr>
-							<tr>
-								<td height="22"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-							</tr>
-							<tr>
-								<td style="font-family: 'Open Sans', Arial , sans-serif; font-size:18px; color:#443347; font-weight:600; text-transform:capitalize; text-align:center;">Quality</td>
-							</tr>
-							<tr>
-								<td height="17"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-							</tr>
-							<tr>
-								<td style="font-family: 'Open Sans', Arial , sans-serif; font-size:14px; color:#443347; font-weight:400; line-height:22px;  text-align:center;">Lorem ipsum dolor sit amet consectetuer for your adipiscing elit. Duis viverra nisleu felis integer!</td>
-							</tr>
-							<tr>
-								<td height="35"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-							</tr>
-						</table></td>
-						<td width="30" class="mobile-hide"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-						<td valign="top" width="180">
-						<table cellpadding="0" cellspacing="0" border="0" width="100%" style="text-align:center;">
-							<tr>
-								<td height="20"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-							</tr>
-							<tr>
-								<td style="text-align:center;"><img src="https://cesarchabuluac.com/template/location.png" alt="" width="36" height="48" border="0" style="display:inline;" /></td>
-							</tr>
-							<tr>
-								<td height="22"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-							</tr>
-							<tr>
-								<td style="font-family: 'Open Sans', Arial , sans-serif; font-size:18px; color:#443347; font-weight:600; text-transform:capitalize; text-align:center;">Location</td>
-							</tr>
-							<tr>
-								<td height="17"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-							</tr>
-							<tr>
-								<td style="font-family: 'Open Sans', Arial , sans-serif; font-size:14px; color:#443347; font-weight:400; line-height:22px;  text-align:center;">Duis viverra nisl eu felis. Integer nisi. Phasellus sollicitudin, arcu sed for vehicula elementum.</td>
-							</tr>
-							<tr>
-								<td height="35"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-							</tr>
-						</table></td>
-						<td width="30" class="mobile-hide"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-						<td valign="top" width="180">
-						<table cellpadding="0" cellspacing="0" border="0" width="100%" style="text-align:center;">
-							<tr>
-								<td height="20"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-							</tr>
-							<tr>
-								<td style="text-align:center;"><img src="https://cesarchabuluac.com/template/price.png" alt="" width="48" height="44" border="0" style="display:inline;" /></td>
-							</tr>
-							<tr>
-								<td height="22"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-							</tr>
-							<tr>
-								<td style="font-family: 'Open Sans', Arial , sans-serif; font-size:18px; color:#443347; font-weight:600; text-transform:capitalize; text-align:center;">Price</td>
-							</tr>
-							<tr>
-								<td height="17"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-							</tr>
-							<tr>
-								<td style="font-family: 'Open Sans', Arial , sans-serif; font-size:14px; color:#443347; font-weight:400; line-height:22px;  text-align:center;">Lorem ipsum dolor sit amet consectetuer for your adipiscing elit. Get 20$ off duis viverra nisleu!</td>
-							</tr>
-							<tr>
-								<td height="35"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-							</tr>
-						</table></td>
-					</tr>
-				</table></td>
+				<td valign="top"></td>
 				<td width="40" class="gutter-width"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
 			</tr>
 		</table>
-		<!-- Section Five Ends Here -->
-		<!-- Section Six Starts Here -->
 		
-		<!-- Section Six Ends Here -->
-		<!-- Section Seven Starts Here -->
-	
-		<!-- Section Seven Ends Here -->
-		<!-- Section Eight Starts Here -->
-
-		<!-- Section Eight Ends Here -->
-		<!-- Section Nine Starts Here -->
-		<table cellpadding="0" cellspacing="0" border="0" width="680" align="center" class="wrapper" style="background:#ffffff;">
-			<tr>
-				<td width="40" class="gutter-width"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-				<td valign="top">
-				<table cellpadding="0" cellspacing="0" border="0" width="100%">
-					<tr>
-						<td height="9"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-					</tr>
-					<tr>
-						<td valign="top" align="center">
-						<table cellpadding="0" cellspacing="0" border="0" width="234"  align="center" style="background:#443347; border-radius:4px;">
-							<tr>
-								<td height="48" style="background:#443347; border-radius:4px; text-align:center; "><a href="#" style="font-family: 'Open Sans', Arial , sans-serif; font-size:22px; text-align:center;font-weight:bold; text-decoration:none; display:block; line-height:48px; text-transform:uppercase;color:#ffffff;">get even more</a></td>
-							</tr>
-						</table></td>
-					</tr>
-					<tr>
-						<td height="10"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-					</tr>
-				</table></td>
-				<td width="40" class="gutter-width"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-			</tr>
-		</table>
-		<!-- Section Nine Ends Here -->
-		<!-- Section Ten Starts Here -->
-		<table cellpadding="0" cellspacing="0" border="0" width="680" align="center" class="wrapper" style="background:#4dcb76;">
-			<tr>
-				<td><img src="https://cesarchabuluac.com/template/tringle-top.png" alt="" width="680" height="99" border="0" style="display:block; width:100%;"/></td>
-			</tr>
-			<tr>
-				<td valign="top" align="center">
-				<table cellpadding="0" cellspacing="0" border="0" width="100%">
-					<tr>
-						<td width="40" class="gutter-width"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-						<td valign="top" align="center">
-						<table cellpadding="0" cellspacing="0" align="center" border="0" width="482" class="main-content" style="text-align:center;">
-							<tr>
-								<td height="34" class="offer-vspace"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-							</tr>
-							<tr>
-								<td style="font-family: 'Open Sans', Arial , sans-serif; font-size:72px; line-height:1;  font-weight:400; color:#ffffff; text-transform:uppercase; text-align:center;" class="apply-dis">20% OFF</td>
-							</tr>
-							<tr>
-								<td height="14"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-							</tr>
-							<tr>
-								<td style="font-family: 'Open Sans', Arial , sans-serif; font-size:20px; line-height:30px; color:#ffffff;">Lorem ipsum quis massa id velit sagittis fermentum massa. Pellen tesque vel massa a felis laoret.</td>
-							</tr>
-							<tr>
-								<td height="30"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-							</tr>
-							<tr>
-								<td valign="top" align="center">
-								<table cellpadding="0" cellspacing="0" border="0" width="200"  align="center">
-									<tr>
-										<td height="48" style="background:#ffffff; border-radius:4px; text-align:center;"><a href="#" style="font-family: 'Open Sans', Arial , sans-serif; font-size:22px; font-weight:bold; color:#443347; text-transform:uppercase; text-decoration:none; display:block; line-height:48px; text-align:center;">Get coupon</a></td>
-									</tr>
-								</table></td>
-							</tr>
-						</table></td>
-						<td width="40" class="gutter-width"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
-					</tr>
-				</table></td>
-			</tr>
-			<tr>
-				<td><img src="https://cesarchabuluac.com/template/tringle-bottom.png" alt="" width="680" height="96" border="0" style="display:block; width:100%; " /></td>
-			</tr>
-		</table>
-		<!-- Section Ten Ends Here -->
 		<!-- Section Eleven Starts Here -->
 		<table cellpadding="0" cellspacing="0" border="0" width="680" align="center" class="wrapper" style="background:#ffffff;">
 			<tr>
@@ -511,7 +508,7 @@
 						<td height="54" class="top-space"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
 					</tr>
 					<tr>
-						<td style="font-family: 'Open Sans', Arial , sans-serif; font-size:24px; font-weight:normal; line-height:34px; font-style:italic; text-align:center; color:#254273;" class="article-text">“That was the best time I ever had. I felt so relaxed and pieceful. Next spa only here!”</td>
+						<td style="font-family: 'Open Sans', Arial , sans-serif; font-size:24px; font-weight:normal; line-height:34px; font-style:italic; text-align:center; color:#254273;" class="article-text"></td>
 					</tr>
 					<tr>
 						<td height="20"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
@@ -520,7 +517,7 @@
 						<td valign="top" align="center">
 						<table cellpadding="0" cellspacing="0" border="0" align="center">
 							<tr>
-								<td width="50"><img src="https://cesarchabuluac.com/template/profile-pic.png" alt="" width="50" height="50" border="0" style="display:block;" /></td>
+								<!-- <td width="50"><img src="https://cesarchabuluac.com/template/profile-pic.png" alt="" width="50" height="50" border="0" style="display:block;" /></td> -->
 								<td width="15"><img src="https://cesarchabuluac.com/template/blank.gif" width="1" height="1" /></td>
 								<td valign="top">
 								<table cellpadding="0" cellspacing="0" border="0" width="100%" align="left">
@@ -528,13 +525,13 @@
 										<td height="8"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
 									</tr>
 									<tr>
-										<td style="font-family: 'Open Sans', Arial , sans-serif; font-size:16px; line-height:1; color:#254273;font-weight:400;">Kate Mitchel</td>
+										<td style="font-family: 'Open Sans', Arial , sans-serif; font-size:16px; line-height:1; color:#254273;font-weight:400;"></td>
 									</tr>
 									<tr>
 										<td height="8"><img src="https://cesarchabuluac.com/template/blank.gif" alt="" width="1" height="1" /></td>
 									</tr>
 									<tr>
-										<td style="font-family: 'Open Sans', Arial , sans-serif; font-size:14px; line-height:1; color:#999999;font-weight:400;">24 years, Sales Manager</td>
+										<td style="font-family: 'Open Sans', Arial , sans-serif; font-size:14px; line-height:1; color:#999999;font-weight:400;"></td>
 									</tr>
 
 								</table></td>

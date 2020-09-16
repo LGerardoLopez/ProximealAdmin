@@ -191,7 +191,7 @@ class OrderAPIController extends Controller
                 $this->orderRepository->update(['payment_id' => $payment->id], $order->id);
 
                 $this->cartRepository->deleteWhere(['user_id' => $order->user_id]);
-
+                Mail::to($order->user->email)->send(new EmailOrder($order, $this->orderRepository, $payment));
                 Notification::send($order->foodOrders[0]->food->restaurant->users, new NewOrder($order));
             }
         } catch (ValidatorException $e) {
@@ -229,17 +229,8 @@ class OrderAPIController extends Controller
             ]);
 
             $this->orderRepository->update(['payment_id' => $payment->id], $order->id);
-
             $this->cartRepository->deleteWhere(['user_id' => $order->user_id]);
-            // return response()->json($order->foodOrders[0]->food->restaurant->users);
-            //SendMail Notification
-            //$orders = $this->orderRepository->where('id', $order->id)->get();
-            //$order = $order->with('user');
-            Mail::to('cesarchabuluac@gmail.com')->send(new EmailOrder($order, $this->orderRepository));
-            //dd($order->foodOrders[0]->food->restaurant->name);
-            //dd(new NewOrder($order));
-            //return response()->json($this->orderRepository);
-
+            Mail::to($order->user->email)->send(new EmailOrder($order, $this->orderRepository, $payment));
             Notification::send($order->foodOrders[0]->food->restaurant->users, new NewOrder($order));
         } catch (ValidatorException $e) {
             return $this->sendError($e->getMessage());

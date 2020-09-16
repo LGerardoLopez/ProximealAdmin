@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Criteria\Orders\OrdersOfUserCriteria;
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -18,16 +19,17 @@ class EmailOrder extends Mailable
 
     public $subject = 'Notificación de pedido';
     public $order;
+    public $payment;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Order $order, OrderRepository $orderRepo)
+    public function __construct(Order $order, OrderRepository $orderRepo, $payment)
     {
-        //
         $this->order = $order;
         $this->orderRepository = $orderRepo;
+        $this->payment = $payment;
     }
 
     /**
@@ -50,6 +52,7 @@ class EmailOrder extends Mailable
         $total = $subtotal + $order['delivery_fee'];
         $taxAmount = $total * $order['tax'] / 100;
         $total += $taxAmount;
-        return $this->markdown('emails.order', ["order" => $order, "total" => $total, "subtotal" => $subtotal,"taxAmount" => $taxAmount]);
+
+        return $this->markdown('emails.order', ["order" => $order, "payment" => $this->payment, "total" => $total, "subtotal" => $subtotal,"taxAmount" => $taxAmount]);
     }
 }
