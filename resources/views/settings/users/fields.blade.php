@@ -1,5 +1,5 @@
 @if($customFields)
-    <h5 class="col-12 pb-4">{!! trans('lang.main_fields') !!}  <small class="pull-right"> Clave: <span id="key">{{$user->key_id}}</span></small></h5>
+    <h5 class="col-12 pb-4">{!! trans('lang.main_fields') !!}  <small class="pull-right"> Clave: <span id="key">{{isset($user) ? $user->key_id : ''}}</span></small></h5>
 @endif
 <div style="flex: 50%;max-width: 50%;padding: 0 4px;" class="column">
     <!-- Name Field -->
@@ -106,9 +106,9 @@
     </script>
 @endprepend
     @can('permissions.index')
-<!-- Roles Field -->
+    <!-- Roles Field -->
     <div class="form-group row ">
-        <input type="hidden" name="role_selected" id="role_selected" value="{{$rolesSelected[0]}}">
+        <input type="hidden" name="role_selected" id="role_selected" value="{{ !empty($rolesSelected) ? $rolesSelected[0]:null}}">
         {!! Form::label('roles', trans("lang.user_role_id"),['class' => 'col-3 control-label text-right']) !!}
         <div class="col-9">
             {!! Form::select('roles', $role, $rolesSelected, ['class' => 'select2 form-control']) !!}
@@ -116,7 +116,6 @@
         </div>
     </div>
     @endcan
-
 </div>
 @if($customFields)
     {{--TODO generate custom field--}}
