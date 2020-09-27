@@ -101,7 +101,7 @@ class FoodOrder extends Model
      **/
     public function extras()
     {
-        return $this->belongsToMany(\App\Models\Extra::class, 'food_order_extras');
+        return $this->belongsToMany(\App\Models\Extra::class, 'food_order_extras')->withPivot('quantity');
     }
 
     /**
