@@ -1,16 +1,8 @@
 <?php
 
-/**
- * File name: UserController.php
- * Last modified: 2020.06.08 at 20:36:19
- * Author: SmarterVision - https://codecanyon.net/user/smartervision
- * Copyright (c) 2020
- */
-
 namespace App\Http\Controllers;
 
-use App\DataTables\UserDataTable;
-use App\DataTables\UserManagerDataTable;
+use App\DataTables\UserDriverDataTable;
 use App\Events\UserRoleChangedEvent;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
@@ -28,33 +20,33 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Prettus\Validator\Exceptions\ValidatorException;
 
-class UserController extends Controller
+class UserDriverController extends Controller
 {
-    /** @var  UserRepository */
-    private $userRepository;
-    /**
-     * @var RoleRepository
-     */
-    private $roleRepository;
+     /** @var  UserRepository */
+     private $userRepository;
+     /**
+      * @var RoleRepository
+      */
+     private $roleRepository;
+ 
+     /**
+      * @var RoleFolioRepository
+      */
+     private $roleFolioRepository;
+ 
+     /**
+      * @var ModelHasRoleRepository
+      */
+     private $modelHasRoleRepository;
+ 
+     private $uploadRepository;
+ 
+     /**
+      * @var CustomFieldRepository
+      */
+     private $customFieldRepository;
 
-    /**
-     * @var RoleFolioRepository
-     */
-    private $roleFolioRepository;
-
-    /**
-     * @var ModelHasRoleRepository
-     */
-    private $modelHasRoleRepository;
-
-    private $uploadRepository;
-
-    /**
-     * @var CustomFieldRepository
-     */
-    private $customFieldRepository;
-
-    public function __construct(
+     public function __construct(
         UserRepository $userRepo,
         RoleRepository $roleRepo,
         UploadRepository $uploadRepo,
@@ -74,49 +66,22 @@ class UserController extends Controller
     }
 
     /**
-     * Display a listing of the User.
+     * Display a listing of the resource.
      *
-     * @param UserDataTable $userDataTable
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
-    public function index(UserDataTable $userDataTable)
+   public function index(UserDriverDataTable $userDataTable)
     {
-       // $defaultRoles = $this->roleRepository->findByField('default', '1');
-        //dd($defaultRoles[0]->id);
-        return $userDataTable->render('settings.users.index');
+        return $userDataTable->render('settings.users.driver.index');
     }
-
     /**
-     * Display a user profile.
+     * Show the form for creating a new resource.
      *
-     * @param
-     * @return Response
-     */
-    public function profile()
-    {
-        $user = $this->userRepository->findWithoutFail(auth()->id());
-        unset($user->password);
-        $customFields = false;
-        $role = $this->roleRepository->pluck('name', 'name');
-        $rolesSelected = $user->getRoleNames()->toArray();
-        $customFieldsValues = $user->customFieldsValues()->with('customField')->get();
-        //dd($customFieldsValues);
-        $hasCustomField = in_array($this->userRepository->model(), setting('custom_field_models', []));
-        if ($hasCustomField) {
-            $customFields = $this->customFieldRepository->findByField('custom_field_model', $this->userRepository->model());
-            $customFields = generateCustomField($customFields, $customFieldsValues);
-        }
-        return view('settings.users.profile', compact(['user', 'role', 'rolesSelected', 'customFields', 'customFieldsValues']));
-    }
-
-    /**
-     * Show the form for creating a new User.
-     *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        $role = $this->roleRepository->whereIn('name', ['admin', 'client'])->pluck('name', 'name');
+        $role = $this->roleRepository->where('name', 'driver')->pluck('name', 'name');
         $vehicle = $this->vehicleRepository->pluck('brand', 'id');
         $rolesSelected = [];
         $hasCustomField = in_array($this->userRepository->model(), setting('custom_field_models', []));
@@ -125,7 +90,7 @@ class UserController extends Controller
             $html = generateCustomField($customFields);
         }
 
-        return view('settings.users.create')
+        return view('settings.users.driver.create')
             ->with("role", $role)
             ->with("customFields", isset($html) ? $html : false)
             ->with("rolesSelected", $rolesSelected)
@@ -133,28 +98,23 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created User in storage.
+     * Store a newly created resource in storage.
      *
-     * @param CreateUserRequest $request
-     *
-     * @return Response
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
-    public function store(CreateUserRequest $request)
+    public function store(Request $request)
     {
         //Si es demo entonces no es modificable
         if (env('APP_DEMO', false)) {
             Flash::warning('This is only demo app you can\'t change this section ');
-            return redirect(route('users.index'));
+            return redirect(route('users.driver.index'));
         }
 
         $input = $request->all();
 
         //Get role_id by role name
         $role = $this->roleRepository->where('name', $request->roles)->first();
-        //Cuanto roles exiten por id para poder obtener el consecutivo
-        //$next = $this->modelHasRoleRepository->where('role_id', $role->id)->count();
-        //$input['key_id'] = $next + 1;      
-
         $customFields = $this->customFieldRepository->findByField('custom_field_model', $this->userRepository->model());
 
         $input['roles'] = isset($input['roles']) ? $input['roles'] : [];
@@ -188,27 +148,7 @@ class UserController extends Controller
 
         Flash::success('saved successfully.');
 
-        return redirect(route('users.index'));
-    }
-
-    /**
-     * Display the specified User.
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
-    public function show($id)
-    {
-        $user = $this->userRepository->findWithoutFail($id);
-
-        if (empty($user)) {
-            Flash::error('User not found');
-
-            return redirect(route('users.index'));
-        }
-
-        return view('settings.users.profile')->with('user', $user);
+        return redirect(route('users.driver.index'));
     }
 
     public function loginAsUser(Request $request, $id)
@@ -216,7 +156,7 @@ class UserController extends Controller
         $user = $this->userRepository->findWithoutFail($id);
         if (empty($user)) {
             Flash::error('User not found');
-            return redirect(route('users.index'));
+            return redirect(route('users.driver.index'));
         }
         auth()->login($user, true);
         if (auth()->id() !== $user->id) {
@@ -225,23 +165,40 @@ class UserController extends Controller
         return redirect(route('users.profile'));
     }
 
+
     /**
-     * Show the form for editing the specified User.
+     * Display the specified resource.
      *
-     * @param int $id
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $user = $this->userRepository->findWithoutFail($id);
+
+        if (empty($user)) {
+            Flash::error('User not found');
+
+            return redirect(route('users.driver.index'));
+        }
+    }
+
+    /**
+     * Show the form for editing the specified resource.
      *
-     * @return Response
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         if (!auth()->user()->hasRole('admin') && $id != auth()->id()) {
             Flash::error('Permission denied');
-            return redirect(route('users.index'));
+            return redirect(route('users.driver.index'));
         }
         $user = $this->userRepository->findWithoutFail($id);
         unset($user->password);
         $html = false;
-        $role = $this->roleRepository->whereIn('name', ['admin', 'client'])->pluck('name', 'name');
+        $role = $this->roleRepository->where('name', 'driver')->pluck('name', 'name');
         $rolesSelected = $user->getRoleNames()->toArray();
         $vehicle = $this->vehicleRepository->pluck('brand', 'id');
         $customFieldsValues = $user->customFieldsValues()->with('customField')->get();
@@ -254,9 +211,9 @@ class UserController extends Controller
         if (empty($user)) {
             Flash::error('User not found');
 
-            return redirect(route('users.index'));
+            return redirect(route('users.driver.index'));
         }
-        return view('settings.users.edit')
+        return view('settings.users.driver.edit')
             ->with('user', $user)->with("role", $role)
             ->with("rolesSelected", $rolesSelected)
             ->with("customFields", $html)
@@ -264,14 +221,13 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified User in storage.
+     * Update the specified resource in storage.
      *
-     * @param int $id
-     * @param UpdateUserRequest $request
-     *
-     * @return Response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
      */
-    public function update($id, UpdateUserRequest $request)
+    public function update(Request $request, $id)
     {
         if (env('APP_DEMO', false)) {
             Flash::warning('This is only demo app you can\'t change this section ');
@@ -349,41 +305,40 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified User from storage.
+     * Remove the specified resource from storage.
      *
-     * @param int $id
-     *
-     * @return Response
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         if (env('APP_DEMO', false)) {
             Flash::warning('This is only demo app you can\'t change this section ');
-            return redirect(route('users.index'));
+            return redirect(route('users.driver.index'));
         }
         $user = $this->userRepository->findWithoutFail($id);
 
         if (empty($user)) {
             Flash::error('User not found');
 
-            return redirect(route('users.index'));
+            return redirect(route('users.manager.index'));
         }
 
         $this->userRepository->delete($id);
 
         Flash::success('User deleted successfully.');
 
-        return redirect(route('users.index'));
+        return redirect(route('users.driver.index'));
     }
 
-    /**
+     /**
      * Remove Media of User
      * @param Request $request
      */
     public function removeMedia(Request $request)
     {
         if (env('APP_DEMO', false)) {
-            Flash::warning('This is only demo app you can\'t change this section ');
+             Flash::warning('This is only demo app you can\'t change this section ');
         } else {
             if (auth()->user()->can('medias.delete')) {
                 $input = $request->all();
@@ -402,5 +357,4 @@ class UserController extends Controller
     public function nextFolio ($role) {
         
     }
-
 }

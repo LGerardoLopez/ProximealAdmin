@@ -915,6 +915,8 @@ return [
     'user_phone' => 'Phone',
     'user_phone_help' => 'Insert Phone Number',
     'user_phone_placeholder' => '+1 553 459 632',
+    'user_manager' => 'Manager User',
+    'user_driver' => 'Driver User',
     'user_plural' => 'Users',
     'user_profile' => 'Profile',
     'user_remember_token' => 'Remember Token',

@@ -21,8 +21,18 @@
             </li>
 
             <li class="nav-item">
-                <a href="{!! route('users.index') !!}" class="nav-link {{  Request::is('users*') ? 'selected' : '' }}">
+                <a href="{!! route('users.index') !!}" class="nav-link {{  Request::is('users') ? 'selected' : '' }}">
                     <i class="fa fa-users"></i> {{trans('lang.user_plural')}}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{!! route('users.manager.index') !!}" class="nav-link {{  Request::is('users/manager*') ? 'selected' : '' }}">
+                    <i class="fa fa-users"></i> {{trans('lang.user_manager')}}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{!! route('users.driver.index') !!}" class="nav-link {{  Request::is('users/driver') ? 'selected' : '' }}">
+                    <i class="fa fa-users"></i> {{trans('lang.user_driver')}}
                 </a>
             </li>
 

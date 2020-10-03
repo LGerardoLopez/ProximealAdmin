@@ -8,7 +8,7 @@ use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 use Barryvdh\DomPDF\Facade as PDF;
 
-class UserDataTable extends DataTable
+class UserManagerDataTable extends DataTable
 {
 
     /**
@@ -42,7 +42,7 @@ class UserDataTable extends DataTable
             ->editColumn('key_id', function ($user) {
                 return !empty($user->key_id) ? $user->key_id : "#";
             })
-            ->addColumn('action', 'settings.users.datatables_actions')
+            ->addColumn('action', 'settings.users.manager.datatables_actions')
             ->rawColumns(array_merge($columns, ['action']));
     }
 
@@ -54,10 +54,8 @@ class UserDataTable extends DataTable
      */
     public function query(User $model)
     {
-        // return $model->newQuery()->with('roles');     
         return $model->newQuery()->whereHas('roles', function($q){ 
-            $q->where("name", "admin")
-            ->orWhere('name', 'client'); 
+            $q->where("name", "manager"); 
         });
     }
 

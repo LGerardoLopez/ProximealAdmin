@@ -40,8 +40,25 @@ Route::middleware('auth')->group(function () {
 
     Route::post('uploads/store', 'UploadController@store')->name('medias.create');
     Route::get('users/profile', 'UserController@profile')->name('users.profile');
+        
+    Route::get('users/manager', 'UserManagerController@index')->name('users.manager.index'); 
+    Route::get('users/manager/create', 'UserManagerController@create')->name('users.manager.create'); 
+    Route::post('users/manager/store', 'UserManagerController@store')->name('users.manager.store'); 
+    Route::get('users/manager/{id}/edit', 'UserManagerController@edit')->name('users.manager.edit'); 
+    Route::patch('users/manager/{id}/update', 'UserManagerController@update')->name('users.manager.update'); 
+    Route::delete('users/manager/{id}/detroy', 'UserManagerController@destroy')->name('users.manager.destroy'); 
+
+    Route::get('users/driver', 'UserDriverController@index')->name('users.driver.index'); 
+    Route::get('users/driver/create', 'UserDriverController@create')->name('users.driver.create'); 
+    Route::post('users/driver/store', 'UserDriverController@store')->name('users.driver.store'); 
+    Route::get('users/driver/{id}/edit', 'UserDriverController@edit')->name('users.driver.edit'); 
+    Route::patch('users/driver/{id}/update', 'UserDriverController@update')->name('users.driver.update'); 
+    Route::delete('users/driver/{id}/detroy', 'UserDriverController@destroy')->name('users.driver.destroy'); 
+    
+
     Route::post('users/remove-media', 'UserController@removeMedia');
     Route::resource('users', 'UserController');
+    
     Route::get('dashboard', 'DashboardController@index')->name('dashboard');
 
     Route::group(['middleware' => ['permission:medias']], function () {
